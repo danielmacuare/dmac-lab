@@ -1,0 +1,29 @@
+# .github/gitleaks.toml
+
+title = "GitLeaks Configuration"
+
+[extend]
+useDefault = true    # Use the default config as a base
+
+# Custom rules
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(api[_-]?key|apikey|secret)[_-]?[[:alnum:]]{16,}'''
+secretGroup = 1
+entropy = 3.5
+
+# Allowlist specific files or patterns
+[[allowlist]]
+description = "Allowlisted files"
+paths = [
+    '''(?i)test[/_-]files''',
+    '''(?i)\.example$'''
+]
+
+# Allowlist specific commits (e.g., false positives)
+[[allowlist]]
+description = "Allowlisted commits"
+commits = [
+    # "your-commit-hash-here"
+]
