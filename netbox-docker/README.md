@@ -31,6 +31,29 @@ or start a new [GitHub Discussion][github-discussions].
 [netbox-docker-license]: https://github.com/netbox-community/netbox-docker/blob/release/LICENSE
 [github-discussions]: https://github.com/netbox-community/netbox-docker/discussions
 
+
+## Custom User Notes
+- For simplicity all vars have been moved to a single file called netbox.env
+- This is how Netbox creates the initial superuser: [HERE](https://github.com/netbox-community/netbox-docker/blob/0b70f722f91cf90e5fa0178f3db84d28517e191d/docker/docker-entrypoint.sh#L53-L72)
+- Some Env Vars Defaults [HERE](https://artifacthub.io/packages/helm/bootc/netbox)
+- I have modified the default config using a docker-compose.override.yml to expose Netbox over port 8001 instead of the default 8000
+- I have enabled memory overcommit to sort the issue below: `echo "vm.overcommit_memory=1" | sudo tee -a /etc/sysctl.conf` then reload the config `sudo sysctl -p`
+
+```bash
+ ✔ Container netbox-docker-redis-1                 Created                                                                                                                   0.0s
+ ✔ Container netbox-docker-netbox-1                Created                                                                                                                   0.0s
+ ✔ Container netbox-docker-netbox-housekeeping-1   Created                                                                                                                   0.0s
+ ✔ Container netbox-docker-netbox-worker-1         Created                                                                                                                   0.0s
+Attaching to netbox-1, netbox-housekeeping-1, netbox-worker-1, postgres-1, redis-1, redis-cache-1
+redis-cache-1          | 1:C 13 Feb 2025 22:35:52.042 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+```
+
+
+- FIX:
+  - After enabling the memmory overcommit the netbox-docker-redis-cache-1 sitll is marked as unhealthy. After checking the logs, there are no indications of errrors. Not sure if this is really an issue.
+  - Fix CSRF Errors: https://github.com/netbox-community/netbox/discussions/9043
+
+
 ## Quickstart
 
 To get _NetBox Docker_ up and running run the following commands.
