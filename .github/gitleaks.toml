@@ -15,8 +15,9 @@ entropy = 3.5
 
 # Allowlist specific files or patterns
 [[allowlist]]
-description = "Allowlisted files"
+description = "Ignored files"
 paths = [
+    '''netbox-docker/docker/docker-entrypoint.sh''',
     '''(?i)test[/_-]files''',
     '''(?i)\.example$'''
 ]
