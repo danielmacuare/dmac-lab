@@ -68,7 +68,7 @@ else
   if [ -f "/run/secrets/superuser_api_token" ]; then
     SUPERUSER_API_TOKEN="$(</run/secrets/superuser_api_token)"
   elif [ -z ${SUPERUSER_API_TOKEN+x} ]; then
-    SUPERUSER_API_TOKEN='No'
+    SUPERUSER_API_TOKEN='Default Token'
   fi
 
   ./manage.py shell --interface python <<END
