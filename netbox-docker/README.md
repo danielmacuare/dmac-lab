@@ -47,7 +47,8 @@ or start a new [GitHub Discussion][github-discussions].
 Attaching to netbox-1, netbox-housekeeping-1, netbox-worker-1, postgres-1, redis-1, redis-cache-1
 redis-cache-1          | 1:C 13 Feb 2025 22:35:52.042 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
 ```
-
+- TODO:
+  - Continue installing plugins
 
 - FIX:
   - After enabling the memmory overcommit the netbox-docker-redis-cache-1 sitll is marked as unhealthy. After checking the logs, there are no indications of errrors. Not sure if this is really an issue.
