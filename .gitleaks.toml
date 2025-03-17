@@ -14,17 +14,15 @@ secretGroup = 1
 entropy = 3.5
 
 # Allowlist specific files or patterns
-[[allowlist]]
-description = "Ignored files"
+[[rules.allowlists]]
+description = "Ignored files and commits"
+condition = "OR"
 paths = [
     '''netbox-docker/docker/docker-entrypoint.sh''',
     '''(?i)test[/_-]files''',
     '''(?i)\.example$'''
 ]
-
 # Allowlist specific commits (e.g., false positives)
-[[allowlist]]
-description = "Allowlisted commits"
-commits = [
+#commits = [
     # "your-commit-hash-here"
-]
+#]
