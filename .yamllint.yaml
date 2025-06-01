@@ -1,6 +1,9 @@
 ---
 extends: "default"
+# Rules HERE ->  https://yamllint.readthedocs.io/en/stable/rules.html#
 rules:
+  brackets:
+    max-spaces-inside: 2
   comments: "enable"
   empty-values: "disable"
   indentation:
