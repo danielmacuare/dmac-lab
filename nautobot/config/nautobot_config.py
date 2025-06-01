@@ -41,6 +41,7 @@ PLUGINS = [
     "nautobot_ssot",
     "nautobot_bgp_models",
     "nautobot_device_onboarding",
+    "nautobot_firewall_models",
 ]
 
 # Plugins configuration settings. These settings are used by various plugins that the user may have installed.
@@ -86,4 +87,14 @@ PLUGINS_CONFIG = {
     "nautobot_ssot": {"hide_example_jobs": True},
     "nautobot_bgp_models": {},
     "nautobot_device_onboarding": {},
+    "nautobot_firewall_models": {
+        "default_status": "Active",
+        "allowed_status": ["Active"],  # default shown, `[]` allows all
+        "capirca_remark_pass": True,
+        "capirca_os_map": {
+            "cisco_ios": "cisco",
+            "arista_eos": "arista",
+        },
+        # "custom_capirca": "my.custom.func", # provides ability to overide capirca logic
+    },
 }

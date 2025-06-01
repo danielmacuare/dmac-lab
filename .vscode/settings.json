@@ -1,0 +1,4 @@
+{
+    // Disabling Pylance in faovur of Basedpyright for type checking
+    "python.analysis.typeCheckingMode": "off"
+}

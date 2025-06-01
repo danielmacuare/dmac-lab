@@ -1,27 +1,33 @@
+[tool]
+ruff = { }
+
+
 [tool.poetry]
 name = "nautobot-docker-compose"
 version = "0.1.1"
 description = "Nautobot Deployment for Testing"
-authors = ["Daniel Macuare <daniel280187@hotmail.com>"]
+authors = [ "Daniel Macuare <daniel280187@hotmail.com>" ]
+package-mode = false
+
 
 [tool.poetry.dependencies]
 python = ">=3.12,<3.13"
 nautobot = "2.4.2"
-
-# nautobot-example-plugin = {path = "plugins/plugin_example", develop = true}
 invoke = "^2.2.0"
 nautobot-golden-config = "^2.3.0"
 nautobot-ssot = "^3.5.0"
 nautobot-bgp-models = "^2.3.0"
 nautobot-device-onboarding = "^4.2.1"
+nautobot-firewall-models = "^2.2.2"
 
 
 [tool.poetry.group.dev.dependencies]
 invoke = "*"
 toml = "*"
 pre-commit = "^4.1.0"
+ruff = "^0.11.12"
 
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = [ "poetry-core>=1.0.0" ]
 build-backend = "poetry.core.masonry.api"

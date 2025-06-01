@@ -1,4 +1,5 @@
 """Nautobot plugin for example."""
+
 __version__ = "0.1.0"
 
 from nautobot.extras.plugins import PluginConfig

@@ -52,7 +52,9 @@ with open("pyproject.toml", "r", encoding="utf8") as pyproject:
     parsed_toml = toml.load(pyproject)
 
 try:
-    NAUTOBOT_VERSION = parsed_toml["tool"]["poetry"]["dependencies"]["nautobot"]["version"]
+    NAUTOBOT_VERSION = parsed_toml["tool"]["poetry"]["dependencies"]["nautobot"][
+        "version"
+    ]
 except TypeError:
     NAUTOBOT_VERSION = parsed_toml["tool"]["poetry"]["dependencies"]["nautobot"]
 
