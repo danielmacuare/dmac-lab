@@ -4,3 +4,4 @@ clab/images
 *nautobot/plugins/*/.venv*
 typings/
 *__pycache__*
+*.vscode/
