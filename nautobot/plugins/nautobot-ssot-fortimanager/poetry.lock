@@ -621,13 +621,13 @@ files = [
 
 [[package]]
 name = "django"
-version = "4.2.22"
+version = "4.2.23"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "django-4.2.22-py3-none-any.whl", hash = "sha256:0a32773b5b7f4e774a155ee253ab24a841fed7e9e9061db08bf2ce9711da404d"},
-    {file = "django-4.2.22.tar.gz", hash = "sha256:e726764b094407c313adba5e2e866ab88f00436cad85c540a5bf76dc0a912c9e"},
+    {file = "django-4.2.23-py3-none-any.whl", hash = "sha256:dafbfaf52c2f289bd65f4ab935791cb4fb9a198f2a5ba9faf35d7338a77e9803"},
+    {file = "django-4.2.23.tar.gz", hash = "sha256:42fdeaba6e6449d88d4f66de47871015097dc6f1b87910db00a91946295cfae4"},
 ]
 
 [package.dependencies]
@@ -1566,19 +1566,19 @@ test = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "nautobot"
-version = "2.4.9"
+version = "2.4.7"
 description = "Source of truth and network automation platform."
 optional = false
 python-versions = "<3.13,>=3.9.2"
 files = [
-    {file = "nautobot-2.4.9-py3-none-any.whl", hash = "sha256:452e8d96fdd4691719232a506dbf065d8e7e1d1b2e78f90a08cbf4187e7a2e82"},
-    {file = "nautobot-2.4.9.tar.gz", hash = "sha256:377b94cdf00d023e864062f15d20a5ada0ee2a0340285ff7a333151ad25ee1b1"},
+    {file = "nautobot-2.4.7-py3-none-any.whl", hash = "sha256:cfae8b7b80b76399b5016745288dfd965181f2fa83db8a1386fe4a9558e90060"},
+    {file = "nautobot-2.4.7.tar.gz", hash = "sha256:795181061008031bd92dd2bc25156c066805facbab20e10f445fd6ee6d96b2cb"},
 ]
 
 [package.dependencies]
 celery = ">=5.3.6,<5.4.0"
-cryptography = ">=44.0.3,<44.1.0"
-Django = ">=4.2.21,<4.3.0"
+cryptography = ">=44.0.2,<44.1.0"
+Django = ">=4.2.20,<4.3.0"
 django-ajax-tables = ">=1.1.1,<1.2.0"
 django-celery-beat = ">=2.6.0,<2.7.0"
 django-celery-results = ">=2.5.1,<2.6.0"
@@ -1617,7 +1617,7 @@ Pillow = ">=11.0.0,<11.1.0"
 prometheus-client = ">=0.20.0,<0.21.0"
 psycopg2-binary = ">=2.9.10,<2.10.0"
 python-slugify = ">=8.0.3,<8.1.0"
-pyuwsgi = ">=2.0.29,<2.1.0"
+pyuwsgi = ">=2.0.26,<2.1.0"
 PyYAML = ">=6.0.2,<6.1.0"
 social-auth-app-django = ">=5.4.3,<5.5.0"
 svgwrite = ">=1.4.2,<1.5.0"
@@ -2572,18 +2572,18 @@ typing-extensions = {version = ">=4.4.0", markers = "python_version < \"3.13\""}
 
 [[package]]
 name = "requests"
-version = "2.32.3"
+version = "2.32.4"
 description = "Python HTTP for Humans."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "requests-2.32.3-py3-none-any.whl", hash = "sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6"},
-    {file = "requests-2.32.3.tar.gz", hash = "sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"},
+    {file = "requests-2.32.4-py3-none-any.whl", hash = "sha256:27babd3cda2a6d50b30443204ee89830707d396671944c998b5975b031ac2b2c"},
+    {file = "requests-2.32.4.tar.gz", hash = "sha256:27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422"},
 ]
 
 [package.dependencies]
 certifi = ">=2017.4.17"
-charset-normalizer = ">=2,<4"
+charset_normalizer = ">=2,<4"
 idna = ">=2.5,<4"
 urllib3 = ">=1.21.1,<3"
 
@@ -3108,4 +3108,4 @@ test = ["websockets"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.12,<3.13"
-content-hash = "a517991078796895e7e69955d1128aa3ac61b895f557c773b606108c9d7f3285"
+content-hash = "cd5272578857543a815851e19f8d91b343c91cd3a1b90033b5a3095973e87065"

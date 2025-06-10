@@ -39,11 +39,11 @@ CACHEOPS_REDIS = parse_redis_connection(redis_database=1)
 # Enable installed plugins. Add the name of each plugin to the list.
 # PLUGINS = ["nautobot_example_plugin"]
 PLUGINS = [
-    "nautobot_plugin_nornir",
-    "nautobot_golden_config",
+    # "nautobot_plugin_nornir",
+    # "nautobot_golden_config",
     "nautobot_ssot",
-    "nautobot_bgp_models",
-    "nautobot_device_onboarding",
+    # "nautobot_bgp_models",
+    # "nautobot_device_onboarding",
     "nautobot_firewall_models",
     "nautobot_ssot_fortimanager",
 ]
