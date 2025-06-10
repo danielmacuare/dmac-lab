@@ -1,3 +1,6 @@
 clab/images
 *.env*
 *.venv/*
+*nautobot/plugins/*/.venv*
+typings/
+*__pycache__*
