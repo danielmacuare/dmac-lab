@@ -22,6 +22,9 @@ TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
 LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
 
 #
+INSTALLATION_METRICS_ENABLED = False
+
+#
 # Redis
 #
 
@@ -42,6 +45,7 @@ PLUGINS = [
     "nautobot_bgp_models",
     "nautobot_device_onboarding",
     "nautobot_firewall_models",
+    "nautobot_ssot_fortimanager",
 ]
 
 # Plugins configuration settings. These settings are used by various plugins that the user may have installed.
