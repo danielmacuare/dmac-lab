@@ -7,6 +7,8 @@ from nautobot.extras.choices import SecretsGroupAccessTypeChoices, SecretsGroupS
 from nautobot.extras.models import SecretsGroup
 from nautobot_ssot.jobs.base import DataSource
 
+from nautobot_ssot_fortimanager.diffsync.adapters.nautobot import FortiManagerToNautobotAdapter
+
 # FMG_URL
 # FMG_USER
 # FMG_PASS
@@ -52,7 +54,9 @@ class FortiManagerDataSource(DataSource):
     @override
     def load_target_adapter(self):
         self.logger.info("Create Target Adapter Nautobot")
+        self.target_adapter = FortiManagerToNautobotAdapter(job=self)
         self.logger.info("Loading Target Data from Nautobot")
+        # self.target_adapter.load()
         self.logger.info("Nautobot Data Load")
 
     @override

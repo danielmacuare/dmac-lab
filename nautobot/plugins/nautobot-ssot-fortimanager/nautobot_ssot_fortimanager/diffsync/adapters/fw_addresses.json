@@ -1,0 +1,23 @@
+{
+    "address1": {
+        "name": "cloudflare-fqdn",
+        "fqdn": "www.cloudflare.com"
+    },
+    "address2": {
+        "name": "Cloudflare-IP",
+        "ip_address": "104.16.123.96/32",
+        "source_model": "nautobot.ipam.models.IPAddress"
+    },
+    "address3": {
+        "name": "LAN",
+        "ip_range": {
+            "start_range": "10.1.1.1",
+            "end_range": "10.1.1.254"
+        }
+    },
+    "address4": {
+        "name": "All-Networks",
+        "prefix": "0.0.0.0/0",
+        "source_model": "nautobot.ipam.models.Prefix"
+    }
+}

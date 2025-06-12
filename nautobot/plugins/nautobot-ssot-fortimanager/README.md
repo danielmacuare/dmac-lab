@@ -3,6 +3,11 @@ This app/plugin will help us pull information from FortiManager into the Nautobo
 
 In this case we will use the [SSOT framework](https://github.com/nautobot/nautobot-app-ssot) which is built on top of the [DiffSync Library](https://github.com/networktocode/diffsync) which will provide us functionality to compare the data stored in Nautobot against the data received from FortiManager.
 
+## TO-DO
+- Create a diffsync model to load data from a source (JSON) and update the Target (Nautobot)
+    - Update nautobot.ipam.IPAddress with an IP
+
+
 ## Useful Links
 - [Nautobot App Development Docs](https://docs.nautobot.com/projects/core/en/stable/development/apps/)
 - [Nautobot Docker Compose - App Installation](https://github.com/nautobot/nautobot-docker-compose/blob/main/docs/plugins.md)
