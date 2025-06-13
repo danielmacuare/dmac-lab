@@ -7,6 +7,7 @@ from nautobot.extras.choices import SecretsGroupAccessTypeChoices, SecretsGroupS
 from nautobot.extras.models import SecretsGroup
 from nautobot_ssot.jobs.base import DataSource
 
+from nautobot_ssot_fortimanager.diffsync.adapters.fmanager import FortiManagerIPAddressAdapter
 from nautobot_ssot_fortimanager.diffsync.adapters.nautobot import FortiManagerToNautobotAdapter
 
 # FMG_URL
@@ -36,7 +37,7 @@ class FortiManagerDataSource(DataSource):
     def load_source_adapter(self):
         # --- START DEBUGGING ---
         self.logger.info(f"Value of self.fmg_details: {self.fmg_details}")
-        self.logger.info(f"Type of self.fmg_details: {type(self.fmg_details)}")
+        self.logger.info(f"Type of self.fmg_details: {str(type(self.fmg_details))}")
         # --- END DEBUGGING ---
 
         url = self.fmg_details.get_secret_value(
@@ -51,13 +52,16 @@ class FortiManagerDataSource(DataSource):
 
         self.logger.info(msg=f"Will connect to {url} with {username} and pass: {password}")
 
+        self.source_adapter = FortiManagerIPAddressAdapter(url=url, username=username, password=password, job=self)
+        self.source_adapter.load()
+
     @override
     def load_target_adapter(self):
         self.logger.info("Create Target Adapter Nautobot")
         self.target_adapter = FortiManagerToNautobotAdapter(job=self)
         self.logger.info("Loading Target Data from Nautobot")
-        # self.target_adapter.load()
-        self.logger.info("Nautobot Data Load")
+        self.target_adapter.load()
+        self.logger.info("Target Data Loaded from Nautobot")
 
     @override
     def run(self, fmg_details, use_cache, dryrun, memory_profiling, *args, **kwargs):
@@ -65,7 +69,7 @@ class FortiManagerDataSource(DataSource):
         self.use_cache = use_cache
         self.dryrun = dryrun
         self.memory_profiling = memory_profiling
-        self.logger.debug(f"Secrets group: {fmg_details} selecte")
+        self.logger.debug(f"Secrets group: {fmg_details} selected")
         super().run(dryrun=self.dryrun, memory_profiling=self.memory_profiling, **kwargs)
 
 

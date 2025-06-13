@@ -1,3 +1,5 @@
+"""Common data model that will be used by the source and target adapters"""
+
 from diffsync.enum import DiffSyncModelFlags
 from nautobot.ipam.models import IPAddress
 from nautobot_firewall_models.models import AddressObject
@@ -15,17 +17,17 @@ from nautobot_ssot.contrib.typeddicts import TagDict
 """
 
 
-class FortiManagerIPAddress(NautobotModel):
+class IPAddressDiffSyncModel(NautobotModel):
     """
     Model to store IPAddresses
     """
 
     _model = IPAddress
     _modelname = "ip_address"
-    _identifiers = ("address",)
+    _identifiers = ("host",)
     _attributes = ("description", "tags")
 
-    address: str
+    host: str
     description: str
     tags: list[TagDict] = []
 

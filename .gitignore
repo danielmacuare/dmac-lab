@@ -5,3 +5,4 @@ clab/images
 typings/
 *__pycache__*
 *.vscode/
+*utilities/
