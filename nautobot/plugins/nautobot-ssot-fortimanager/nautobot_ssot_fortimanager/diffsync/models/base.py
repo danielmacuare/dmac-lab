@@ -24,16 +24,25 @@ class IPAddressDiffSyncModel(NautobotModel):
 
     _model = IPAddress
     _modelname = "ip_address"
-    _identifiers = ("host",)
-    _attributes = ("description", "tags")
+    _identifiers = ("host", "parent__namespace__name")
+    _attributes = ("description", "tags", "mask_length", "status__name")
 
     host: str
+    parent__namespace__name: str
     description: str
     tags: list[TagDict] = []
+    mask_length: int
+    # status__name ---> Performs obj.status.name in the background
+    status__name: str
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.model_flags = DiffSyncModelFlags.SKIP_UNMATCHED_DST
+
+    # Filter only IPs tagged with FortiManager
+    @classmethod
+    def get_queryset(cls):
+        return IPAddress.objects.filter(parent__namespace__name="FortiManager")
 
 
 class FortiManagerAddressObject(NautobotModel):

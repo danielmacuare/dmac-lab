@@ -39,13 +39,14 @@ CACHEOPS_REDIS = parse_redis_connection(redis_database=1)
 # Enable installed plugins. Add the name of each plugin to the list.
 # PLUGINS = ["nautobot_example_plugin"]
 PLUGINS = [
-    # "nautobot_plugin_nornir",
-    # "nautobot_golden_config",
     "nautobot_ssot",
-    # "nautobot_bgp_models",
-    # "nautobot_device_onboarding",
     "nautobot_firewall_models",
     "nautobot_ssot_fortimanager",
+    # "nautobot_plugin_nornir",
+    # "nautobot_golden_config",
+    # "nautobot_bgp_models",
+    # "nautobot_device_onboarding",
+    # ADD YOUR PLUGIN NAMES HERE
 ]
 
 # Plugins configuration settings. These settings are used by various plugins that the user may have installed.
@@ -101,4 +102,5 @@ PLUGINS_CONFIG = {
         },
         # "custom_capirca": "my.custom.func", # provides ability to overide capirca logic
     },
+    # ADD YOUR PLUGIN CONFIG HERE
 }

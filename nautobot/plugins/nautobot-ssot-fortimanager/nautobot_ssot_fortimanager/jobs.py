@@ -36,8 +36,9 @@ class FortiManagerDataSource(DataSource):
     @override
     def load_source_adapter(self):
         # --- START DEBUGGING ---
-        self.logger.info(f"Value of self.fmg_details: {self.fmg_details}")
-        self.logger.info(f"Type of self.fmg_details: {str(type(self.fmg_details))}")
+        # self.logger.info(f"Value of self.fmg_details: {self.fmg_details}")
+        # self.logger.info(f"Type of self.fmg_details: {str(type(self.fmg_details))}")
+        # self.logger.info(f"Test String-12")
         # --- END DEBUGGING ---
 
         url = self.fmg_details.get_secret_value(
@@ -50,9 +51,12 @@ class FortiManagerDataSource(DataSource):
             SecretsGroupAccessTypeChoices.TYPE_HTTP, SecretsGroupSecretTypeChoices.TYPE_PASSWORD
         )
 
-        self.logger.info(msg=f"Will connect to {url} with {username} and pass: {password}")
+        # self.logger.info(msg=f"Will connect to {url} with {username} and pass: {password}")
 
+        self.logger.info(msg="Source Adapter: FortiManagerIPAddressAdapter")
         self.source_adapter = FortiManagerIPAddressAdapter(url=url, username=username, password=password, job=self)
+
+        self.logger.info(msg="Loading Source Data from FortiManager")
         self.source_adapter.load()
 
     @override
