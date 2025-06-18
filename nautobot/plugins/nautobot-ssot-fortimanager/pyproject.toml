@@ -36,6 +36,7 @@ reportUnknownVariableType = false
 reportUnknownMemberType = false
 reportUnannotatedClassAttribute = false
 reportOptionalMemberAccess = false
+reportAttributeAccessIssue = false
 
 [tool.ruff]
 line-length = 120

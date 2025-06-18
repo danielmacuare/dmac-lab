@@ -30,7 +30,8 @@ class FortiManagerBaseAdapter(Adapter):
 
         self.job = job
         # self.sync = sync
-        self.json_file = Path(__file__).parent / "fw_addresses.json"
+        # self.json_file = Path(__file__).parent / "fw_addresses.json"
+        self.json_file = "/opt/nautobot/fw_addresses.json"
 
 
 class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
@@ -77,7 +78,7 @@ class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
                     status__name="Active",
                 )
 
-                self.add(ip)
+                self.add(obj=ip)
 
                 self.job.logger.info("IP Name %s", ip.host)
                 self.job.logger.info("IP Description %s", ip.description)
@@ -102,7 +103,7 @@ class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
 
         self.load_ip(ip_addresses=json_data)
 
-        self.job.logger.info(f"Job logger instance: {self.job.logger}")  # You can inspect the logger
+        self.job.logger.info("Job logger instance: %s", self.job.logger)  # You can inspect the logger
         self.job.logger.info(f"Adapter URL: {self.url}")
         self.job.logger.info(f"Adapter Username: {self.username}")
         # self.job.logger.info(f"Use cache: {self.use_cache}")

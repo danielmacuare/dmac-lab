@@ -19,4 +19,4 @@ class NautobotIPAddressDiffSyncModel(IPAddressDiffSyncModel):
         try:
             adapter.log.info("IP Add Obj: %", ip_add_obj)
         except Exception as ip_address_err:
-            adapter.job.logger.info(f" Could not create IP Address Mapping. Error {ip_address_err}I")
+            adapter.job.logger.info(f" Could not create IP Address Mapping. Error {ip_address_err}")

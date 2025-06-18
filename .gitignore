@@ -5,4 +5,9 @@ clab/images
 typings/
 *__pycache__*
 *.vscode/
+
+## nautobot
 *utilities/
+*nautobot/*.sql
+nautobot/*.sh
+

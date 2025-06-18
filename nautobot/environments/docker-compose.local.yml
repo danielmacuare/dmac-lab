@@ -6,6 +6,7 @@ services:
       - "8080:8080"
     volumes:
       - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
+      - "../config/fw_addresses.json:/opt/nautobot/fw_addresses.json"
       - "../jobs:/opt/nautobot/jobs"
     healthcheck:
       interval: "30s"
@@ -16,4 +17,5 @@ services:
   celery_worker:
     volumes:
       - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
+      - "../config/fw_addresses.json:/opt/nautobot/fw_addresses.json"
       - "../jobs:/opt/nautobot/jobs"
