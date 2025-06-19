@@ -1,6 +1,5 @@
 """Common data model that will be used by the source and target adapters"""
 
-from diffsync.enum import DiffSyncModelFlags
 from nautobot.ipam.models import IPAddress
 from nautobot_firewall_models.models import AddressObject
 from nautobot_ssot.contrib import NautobotModel
@@ -37,7 +36,8 @@ class IPAddressDiffSyncModel(NautobotModel):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.model_flags = DiffSyncModelFlags.SKIP_UNMATCHED_DST
+        # The line below will leave untouched any object that only exists in the Target but not the source
+        # self.model_flags = DiffSyncModelFlags.SKIP_UNMATCHED_DST
 
     # Filter only IPs tagged with FortiManager
     @classmethod
