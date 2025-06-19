@@ -3,7 +3,7 @@ from nautobot_ssot.contrib import NautobotAdapter
 from nautobot_ssot_fortimanager.diffsync.models.base import IPAddressDiffSyncModel
 
 
-class FortiManagerToNautobotAdapter(NautobotAdapter):
+class NautobotIPAddressAdapter(NautobotAdapter):
     ip_address = IPAddressDiffSyncModel
     # address_object = AddressObjectDiffSyncModel
     # address_groups = AddressGroupsDiffSyncModel
