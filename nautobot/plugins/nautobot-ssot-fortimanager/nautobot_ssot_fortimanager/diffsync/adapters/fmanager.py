@@ -1,12 +1,14 @@
 """Source Adapter where we translate data from FortiManager Data model into Nautobots DM"""
 
 from ipaddress import ip_network
-from pathlib import Path
 from typing import Any, override
 
 from diffsync import Adapter
 
 from nautobot_ssot_fortimanager.diffsync.models.base import IPAddressDiffSyncModel
+
+FORTIMANAGER_NAUTOBOT_NAMESPACE: str = "FortiManager"
+SOURCE_FILE_PATH: str = "/opt/nautobot/fw_addresses.json"
 
 
 class FortiManagerBaseAdapter(Adapter):
@@ -31,7 +33,7 @@ class FortiManagerBaseAdapter(Adapter):
         self.job = job
         # self.sync = sync
         # self.json_file = Path(__file__).parent / "fw_addresses.json"
-        self.json_file = "/opt/nautobot/fw_addresses.json"
+        self.json_file = SOURCE_FILE_PATH
 
 
 class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
@@ -39,7 +41,7 @@ class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
 
     top_level = ["ip_address"]
 
-    def read_json_file(self, path: Path):
+    def read_json_file(self, path: str):
         """Read the JSON file and return its content."""
         import json
 
@@ -52,7 +54,6 @@ class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
         Processes the raw JSON data, extracts IP addresses, and creates
         IPAddressDiffSyncModel instances.
         """
-        FORTIMANAGER_NAUTOBOT_NAMESPACE: str = "FortiManager"
 
         for address, param in ip_addresses.items():
             self.job.logger.info("From  Inside load_ip - Processing Dict Key: %s", address)
@@ -73,7 +74,7 @@ class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
                 ip = self.ip_address(
                     host=ip_add,
                     mask_length=ip_mask,
-                    description=(f"{FORTIMANAGER_NAUTOBOT_NAMESPACE} - {param['name']}"),
+                    description=(f"{param['description']}"),
                     parent__namespace__name=FORTIMANAGER_NAUTOBOT_NAMESPACE,
                     status__name="Active",
                 )
