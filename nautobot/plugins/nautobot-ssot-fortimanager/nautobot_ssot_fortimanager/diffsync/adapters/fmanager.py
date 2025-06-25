@@ -1,14 +1,30 @@
 """Source Adapter where we translate data from FortiManager Data model into Nautobots DM"""
 
 from ipaddress import ip_network
+from os import getenv
+from pathlib import Path
 from typing import Any, override
 
 from diffsync import Adapter
 
 from nautobot_ssot_fortimanager.diffsync.models.base import IPAddressDiffSyncModel
 
-FORTIMANAGER_NAUTOBOT_NAMESPACE: str = "FortiManager"
-SOURCE_FILE_PATH: str = "/opt/nautobot/fw_addresses.json"
+_SOURCE_FILE_PATH: str | None = getenv("SOURCE_FILE_PATH")
+FORTIMANAGER_NAUTOBOT_NAMESPACE: str | None = getenv("FORTIMANAGER_NAUTOBOT_NAMESPACE")
+# SOURCE_FILE_PATH: str = "/opt/nautobot/fw_addresses.json"
+# FORTIMANAGER_NAUTOBOT_NAMESPACE: str = "FortiManager"
+
+if _SOURCE_FILE_PATH is None:
+    raise ValueError("Environment Variable 'SOURCE_FILE_PATH' is not set")
+if FORTIMANAGER_NAUTOBOT_NAMESPACE is None:
+    raise ValueError("Environment Variable 'FORTIMANAGER_NAUTOBOT_NAMESPACE' is not set")
+
+SOURCE_FILE_PATH: Path = Path(_SOURCE_FILE_PATH)
+
+if not SOURCE_FILE_PATH.exists():
+    raise FileNotFoundError(f"SOURCE_FILE_PATH: {_SOURCE_FILE_PATH} does not exists")
+if not SOURCE_FILE_PATH.is_file():
+    raise ValueError(f"SOURCE_FILE_PATH: {_SOURCE_FILE_PATH} is not a file")
 
 
 class FortiManagerBaseAdapter(Adapter):
@@ -17,7 +33,7 @@ class FortiManagerBaseAdapter(Adapter):
         url: str | None = None,
         username: str | None = None,
         password: str | None = None,
-        # use_cache=True,
+        use_cache: bool = False,
         *args,
         job=None,
         sync=None,
@@ -28,15 +44,14 @@ class FortiManagerBaseAdapter(Adapter):
         self.url = url
         self.username = username
         self.password = password
-        # self.use_cache = use_cache
+        self.use_cache = use_cache
 
         self.job = job
         # self.sync = sync
-        # self.json_file = Path(__file__).parent / "fw_addresses.json"
         self.json_file = SOURCE_FILE_PATH
 
 
-class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
+class FortiManagerFWRulesAdapter(FortiManagerBaseAdapter):
     ip_address = IPAddressDiffSyncModel
 
     top_level = ["ip_address"]
@@ -49,15 +64,15 @@ class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
             data = json.load(file)
         return data
 
-    def load_ip(self, ip_addresses: dict[str, dict[str, Any]]):
+    def load_ip_addresses(self, ip_addresses: dict[str, dict[str, Any]]):
         """
         Processes the raw JSON data, extracts IP addresses, and creates
         IPAddressDiffSyncModel instances.
         """
 
-        for address, param in ip_addresses.items():
-            self.job.logger.info("From  Inside load_ip - Processing Dict Key: %s", address)
-            self.job.logger.info("From  Inside load_ip: - Processing Dict Value: %s", param)
+        for param in ip_addresses.values():
+            # self.job.logger.info("From  Inside load_ip_addresses - Processing Dict Key: %s", address)
+            # self.job.logger.info("From  Inside load_ip_addresses: - Processing Dict Value: %s", param)
 
             # Creating the IPAddressDiffSyncModel for the source adapter
 
@@ -81,9 +96,8 @@ class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
 
                 self.add(obj=ip)
 
-                self.job.logger.info("IP Name %s", ip.host)
-                self.job.logger.info("IP Description %s", ip.description)
-                self.job.logger.info("Object Added")
+                # self.job.logger.info("IP Name %s - IP Description %s", ip.host, ip.description)
+                # self.job.logger.info("Object Added")
 
     @override
     def load(self):
@@ -94,18 +108,12 @@ class FortiManagerIPAddressAdapter(FortiManagerBaseAdapter):
 
         # Error Handling- Can't Open file, no content in file, file not correctly formatted as JSON, etc
 
-        # Valid code
-
         self.job.logger.info(f"Data from json: {json_data}")
-        # address_name: str | None = json_data.get("address1.name")
-        # ip_address: str | None = json_data.get("address1.ip_address")
-        # ip_range: str | None = json_data.get("address1.ip_range")
-        # prefix: str | None = json_data.get("address1.prefix")
 
-        self.load_ip(ip_addresses=json_data)
+        self.load_ip_addresses(ip_addresses=json_data)
 
-        self.job.logger.info("Job logger instance: %s", self.job.logger)  # You can inspect the logger
-        self.job.logger.info(f"Adapter URL: {self.url}")
-        self.job.logger.info(f"Adapter Username: {self.username}")
-        # self.job.logger.info(f"Use cache: {self.use_cache}")
-        self.job.logger.info(f"Reading data from JSON File at: {self.json_file}")
+        # self.job.logger.info("Job logger instance: %s", self.job.logger)  # You can inspect the logger
+        # self.job.logger.info(f"Adapter URL: {self.url}")
+        # self.job.logger.info(f"Adapter Username: {self.username}")
+        self.job.logger.info(f"Use cache: {self.use_cache}")
+        # self.job.logger.info(f"Reading data from JSON File at: {self.json_file}")
