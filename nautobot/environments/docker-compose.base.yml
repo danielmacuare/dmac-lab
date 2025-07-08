@@ -19,7 +19,7 @@ services:
     depends_on:
       - "db"
       - "redis"
-    <<: [ *nautobot-base, *nautobot-build ]
+    <<: [*nautobot-base, *nautobot-build]
     # If using SSL/TLS Update the fields below
     # volumes:
     #   - "./nautobot.key:/opt/nautobot/nautobot.key:ro"
@@ -27,8 +27,8 @@ services:
   celery_worker:
     entrypoint:
       - "sh"
-      - "-c" # this is to evaluate the $NAUTOBOT_LOG_LEVEL from the env
-      - "nautobot-server celery worker -l $$NAUTOBOT_LOG_LEVEL --events" ## $$ because of docker-compose
+      - "-c"       # this is to evaluate the $NAUTOBOT_LOG_LEVEL from the env
+      - "nautobot-server celery worker -l $$NAUTOBOT_LOG_LEVEL --events"                         # $$ because of docker-compose
     depends_on:
       nautobot:
         condition: "service_healthy"
@@ -42,25 +42,27 @@ services:
           "CMD",
           "bash",
           "-c",
-          "nautobot-server celery inspect ping --destination celery@$$HOSTNAME" ## $$ because of docker-compose
+          "nautobot-server celery inspect ping --destination celery@$$HOSTNAME"                  # $$ because of docker-compose
         ]
     <<: *nautobot-base
   celery_beat:
     entrypoint:
       - "sh"
-      - "-c" # this is to evaluate the $NAUTOBOT_LOG_LEVEL from the env
-      - "nautobot-server celery beat -l $$NAUTOBOT_LOG_LEVEL" ## $$ because of docker-compose
+      - "-c"                      # this is to evaluate the $NAUTOBOT_LOG_LEVEL from the env
+      - "nautobot-server celery beat -l $$NAUTOBOT_LOG_LEVEL"                            # $$ because of docker-compose
     depends_on:
       nautobot:
         condition: "service_healthy"
     healthcheck:
       disable: true
     <<: *nautobot-base
+    volumes:
+      - "${HOME}/repos/dmac-lab/nautobot/config/fw_addresses.json:/opt/nautobot/fw_addresses.json"
   redis:
     image: "redis:6-alpine"
     command:
       - "sh"
-      - "-c" # this is to evaluate the $NAUTOBOT_REDIS_PASSWORD from the env
+      - "-c"                           # this is to evaluate the $NAUTOBOT_REDIS_PASSWORD from the env
       - "redis-server --appendonly yes --requirepass $$NAUTOBOT_REDIS_PASSWORD"
     env_file:
       - "local.env"

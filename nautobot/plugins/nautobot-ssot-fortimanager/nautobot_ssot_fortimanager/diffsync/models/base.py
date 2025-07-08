@@ -2,13 +2,15 @@
 
 from nautobot.ipam.models import IPAddress
 from nautobot_firewall_models.models import AddressObject
+from nautobot_firewall_models.models.address import FQDN
 from nautobot_ssot.contrib import NautobotModel
 from nautobot_ssot.contrib.typeddicts import TagDict
 
 """
-## Process
-- Create IP Addresses
-- Create FQDNs
+## Process
+
+- Create IP Addresses (Done)
+- Create FQDNs 
 - Create Prefixes
 - Create IP Ranges
 - Create AddressObject 
@@ -43,6 +45,32 @@ class IPAddressDiffSyncModel(NautobotModel):
     @classmethod
     def get_queryset(cls):
         return IPAddress.objects.filter(parent__namespace__name="FortiManager")
+
+
+class FqdnFWDiffSyncModel(NautobotModel):
+    """
+    Model to store IPAddresses
+    """
+
+    _model = FQDN
+    _modelname = "fqdn_fw"
+    _identifiers = ("name",)
+    _attributes = ("description", "tags", "status__name")
+
+    name: str
+    description: str
+    tags: list[TagDict] = []
+    status__name: str
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # The line below will leave untouched any object that only exists in the Target but not the source
+        # self.model_flags = DiffSyncModelFlags.SKIP_UNMATCHED_DST
+
+    # Filter only IPs tagged with FortiManager
+    # @classmethod
+    # def get_queryset(cls):
+    # return IPAddress.objects.filter(parent__namespace__name="FortiManager")
 
 
 class FortiManagerAddressObject(NautobotModel):

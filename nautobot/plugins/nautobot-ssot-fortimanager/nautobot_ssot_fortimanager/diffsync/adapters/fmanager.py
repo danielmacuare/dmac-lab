@@ -6,8 +6,9 @@ from pathlib import Path
 from typing import Any, override
 
 from diffsync import Adapter
+from nautobot.ipam.models import IPAddress
 
-from nautobot_ssot_fortimanager.diffsync.models.base import IPAddressDiffSyncModel
+from nautobot_ssot_fortimanager.diffsync.models.base import FqdnFWDiffSyncModel, IPAddressDiffSyncModel
 
 _SOURCE_FILE_PATH: str | None = getenv("SOURCE_FILE_PATH")
 FORTIMANAGER_NAUTOBOT_NAMESPACE: str | None = getenv("FORTIMANAGER_NAUTOBOT_NAMESPACE")
@@ -53,10 +54,10 @@ class FortiManagerBaseAdapter(Adapter):
 
 class FortiManagerFWRulesAdapter(FortiManagerBaseAdapter):
     ip_address = IPAddressDiffSyncModel
+    fqdn_fw = FqdnFWDiffSyncModel
+    top_level = ["ip_address", "fqdn_fw"]
 
-    top_level = ["ip_address"]
-
-    def read_json_file(self, path: str):
+    def read_json_file(self, path: Path):
         """Read the JSON file and return its content."""
         import json
 
@@ -64,16 +65,13 @@ class FortiManagerFWRulesAdapter(FortiManagerBaseAdapter):
             data = json.load(file)
         return data
 
-    def load_ip_addresses(self, ip_addresses: dict[str, dict[str, Any]]):
+    def load_ip_addresses(self, data: dict[str, dict[str, Any]]):
         """
         Processes the raw JSON data, extracts IP addresses, and creates
         IPAddressDiffSyncModel instances.
         """
 
-        for param in ip_addresses.values():
-            # self.job.logger.info("From  Inside load_ip_addresses - Processing Dict Key: %s", address)
-            # self.job.logger.info("From  Inside load_ip_addresses: - Processing Dict Value: %s", param)
-
+        for param in data.values():
             # Creating the IPAddressDiffSyncModel for the source adapter
 
             # Check if the address is an IP Addresss
@@ -99,6 +97,51 @@ class FortiManagerFWRulesAdapter(FortiManagerBaseAdapter):
                 # self.job.logger.info("IP Name %s - IP Description %s", ip.host, ip.description)
                 # self.job.logger.info("Object Added")
 
+    def ip_exists_in_nautobot(self, ip_address_str: str):
+        """Check if an IP Address exists in Nautobot IPAM"""
+        try:
+            ip_object = ip_network(ip_address_str, strict=False)
+            normalized_ip = str(ip_object)
+
+            ipam_nautobot_ip: IPAddress = IPAddress.objects.filter(address=normalized_ip).first()
+
+            if ipam_nautobot_ip:
+                self.job.logger.debug("IP Address %s exists", normalized_ip)
+                return ipam_nautobot_ip
+            else:
+                self.job.logger.debug("IP Address %s doesn't exist", normalized_ip)
+                return None
+        except Exception as e:
+            self.job.logger.debug("An unexpected error occurred when checking if IP Exists: %s", e)
+
+    def load_fqdns(self, data: dict[str, dict[str, Any]]):
+        """This will load FQDNs to be updated into the nautobot_ssot_firewalls_model."""
+
+        print(data)
+        for param in data.values():
+            fqdn = param.get("fqdn", None)
+            fqdn_description = param.get("description", None)
+
+            # Checking if the record has FQDNs parse_fqdns
+            if not param.get("fqdn"):
+                self.job.logger.debug("SKIPPED: Entry processed is not an FQDN. Entry %s", param)
+            else:
+                self.job.logger.debug("ADDING: Entry processed is an FQDN. Entry %s", param)
+                fqdn_model = self.fqdn_fw(
+                    name=fqdn, description=f"FQDN Description: {fqdn_description}", status__name="Active"
+                )
+                self.add(obj=fqdn_model)
+
+                # Check if there are ip addresses associated to an fqdn
+                if not param.get("ip_addresses"):
+                    self.job.logger.debug("SKIPPED: No IP Addresses are associated to this FQDN: %s", fqdn)
+                else:
+                    for ip in param["ip_addresses"]:
+                        # Add this IP to the object
+                        print(f"IP: {ip} is associated with {fqdn} - {fqdn_description}")
+                        self.ip_exists_in_nautobot(ip)
+                        # Check if IP already exists in Nautobot
+
     @override
     def load(self):
         json_data = self.read_json_file(path=self.json_file)
@@ -110,7 +153,8 @@ class FortiManagerFWRulesAdapter(FortiManagerBaseAdapter):
 
         self.job.logger.info(f"Data from json: {json_data}")
 
-        self.load_ip_addresses(ip_addresses=json_data)
+        self.load_ip_addresses(data=json_data)
+        self.load_fqdns(data=json_data)
 
         # self.job.logger.info("Job logger instance: %s", self.job.logger)  # You can inspect the logger
         # self.job.logger.info(f"Adapter URL: {self.url}")

@@ -2,13 +2,14 @@
 
 from typing import override
 
+from nautobot.apps.choices import LogLevelChoices
 from nautobot.apps.jobs import BooleanVar, ObjectVar, register_jobs
 from nautobot.extras.choices import SecretsGroupAccessTypeChoices, SecretsGroupSecretTypeChoices
 from nautobot.extras.models import SecretsGroup
 from nautobot_ssot.jobs.base import DataSource
 
-from nautobot_ssot_fortimanager.diffsync.adapters.fmanager import FortiManagerIPAddressAdapter
-from nautobot_ssot_fortimanager.diffsync.adapters.nautobot import NautobotIPAddressAdapter
+from nautobot_ssot_fortimanager.diffsync.adapters.fmanager import FortiManagerFWRulesAdapter
+from nautobot_ssot_fortimanager.diffsync.adapters.nautobot import NautobotFWRulesAdapter
 
 # FMG_URL
 # FMG_USER
@@ -20,9 +21,11 @@ name = "Nautobot SSOT - FortiManager"
 class FortiManagerDataSource(DataSource):
     "FortiManager SSOT Data Source"
 
+    log_level = LogLevelChoices.LOG_DEBUG
+
     fmg_details = ObjectVar(model=SecretsGroup, description="Select FortiManager Details")
 
-    use_cache = BooleanVar(description="Use cache file if available for FortiManager Data")
+    use_cache: BooleanVar = BooleanVar(description="Use cache file if available for FortiManager Data")
 
     class Meta:
         name: str = "FortiManager into Nautobot"
@@ -53,8 +56,10 @@ class FortiManagerDataSource(DataSource):
 
         # self.logger.info(msg=f"Will connect to {url} with {username} and pass: {password}")
 
-        self.logger.info(msg="Source Adapter: FortiManagerIPAddressAdapter")
-        self.source_adapter = FortiManagerIPAddressAdapter(url=url, username=username, password=password, job=self)
+        self.logger.info(msg="Source Adapter: FortiManagerFWRulesAdapter")
+        self.source_adapter = FortiManagerFWRulesAdapter(
+            url=url, username=username, password=password, job=self, use_cache=self.use_cache
+        )
 
         self.logger.info(msg="Loading Source Data from FortiManager")
         self.source_adapter.load()
@@ -62,7 +67,7 @@ class FortiManagerDataSource(DataSource):
     @override
     def load_target_adapter(self):
         self.logger.info("Create Target Adapter Nautobot")
-        self.target_adapter = NautobotIPAddressAdapter(job=self)
+        self.target_adapter = NautobotFWRulesAdapter(job=self)
         self.logger.info("Loading Target Data from Nautobot")
         self.target_adapter.load()
         self.logger.info("Target Data Loaded from Nautobot")

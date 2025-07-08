@@ -8,3 +8,4 @@ nautobot_docker_compose:
     - "docker-compose.postgres.yml"
     - "docker-compose.base.yml"
     - "docker-compose.local.yml"
+    - "docker-compose.vscode-rdb.yml"
