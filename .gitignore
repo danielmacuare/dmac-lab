@@ -1,2 +1,15 @@
-clab/images
+# All
 *.env*
+*.kiro
+.vscode
+*authorized_keys*
+
+# Ansible
+ansible/
+
+# Containerlab
+clab/images
+clab/*/ceos
+clab/*/srl
+clab/*/.tls
+clab/*/topology-data.json
