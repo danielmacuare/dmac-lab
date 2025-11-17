@@ -40,5 +40,17 @@
         "name": "Cloudflare-IP-3",
         "ip_address": "104.16.123.108/32",
         "description": "Address-777"
+    },
+    "service1": {
+        "service": "MYSQL",
+        "ip_protocol": "TCP",
+        "port": "3306",
+        "description": "MySQL Port"
+    },
+    "service2": {
+        "service": "POSTGRES",
+        "ip_protocol": "TCP",
+        "port": "3306",
+        "description": "Postgres Port"
     }
 }

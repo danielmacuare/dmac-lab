@@ -1,8 +1,9 @@
 """Common data model that will be used by the source and target adapters"""
 
+from typing import override
+
 from nautobot.ipam.models import IPAddress
-from nautobot_firewall_models.models import AddressObject
-from nautobot_firewall_models.models.address import FQDN
+from nautobot_firewall_models.models import FQDN, ServiceObject
 from nautobot_ssot.contrib import NautobotModel
 from nautobot_ssot.contrib.typeddicts import TagDict
 
@@ -10,7 +11,7 @@ from nautobot_ssot.contrib.typeddicts import TagDict
 ## Process
 
 - Create IP Addresses (Done)
-- Create FQDNs 
+- Create FQDNs (Done)
 - Create Prefixes
 - Create IP Ranges
 - Create AddressObject 
@@ -67,28 +68,28 @@ class FqdnFWDiffSyncModel(NautobotModel):
         # The line below will leave untouched any object that only exists in the Target but not the source
         # self.model_flags = DiffSyncModelFlags.SKIP_UNMATCHED_DST
 
-    # Filter only IPs tagged with FortiManager
+    # Filter only IPs with FortiManager used as a Namespace
     # @classmethod
     # def get_queryset(cls):
     # return IPAddress.objects.filter(parent__namespace__name="FortiManager")
 
 
-class FortiManagerAddressObject(NautobotModel):
-    """The AddressObject can have 4 types of IPs:
-    - fqdn
-    - ip_address
-    - ip_range
-    - prefix
-    I need to filter by name and tag source =  FortiManager
-    """
+class ServiceDiffSyncModel(NautobotModel):
+    """Diffsync model to sync custom service objects as Nautobot comes with some predefined ones."""
 
-    _model = AddressObject
-    _modelname = "adress_object"
-    _identifiers = ("name",)
-    _attributes = ("address", "description", "ip_address", "tags")
+    _model = ServiceObject
+    _modelname = "service_object_fw"
+    _identifiers = ("name", "ip_protocol")
+    _attributes = ("port", "status__name", "description", "tags")
 
     name: str
-    address: str
+    ip_protocol: str
+    port: str | None = None
+    status__name: str
     description: str
-    ip_address: str
     tags: list[TagDict] = []
+
+    @classmethod
+    @override
+    def get_queryset(cls):
+        return ServiceObject.objects.filter(tags__name="FortiManager")

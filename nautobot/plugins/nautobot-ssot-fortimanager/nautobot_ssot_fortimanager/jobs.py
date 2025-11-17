@@ -38,12 +38,6 @@ class FortiManagerDataSource(DataSource):
 
     @override
     def load_source_adapter(self):
-        # --- START DEBUGGING ---
-        # self.logger.info(f"Value of self.fmg_details: {self.fmg_details}")
-        # self.logger.info(f"Type of self.fmg_details: {str(type(self.fmg_details))}")
-        # self.logger.info(f"Test String-12")
-        # --- END DEBUGGING ---
-
         url = self.fmg_details.get_secret_value(
             SecretsGroupAccessTypeChoices.TYPE_HTTP, SecretsGroupSecretTypeChoices.TYPE_URL
         )

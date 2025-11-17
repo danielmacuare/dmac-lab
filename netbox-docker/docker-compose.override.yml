@@ -1,5 +1,10 @@
 # Custom Overrides
 services:
   netbox:
+    image: netboxcommunity/netbox:v4.4.6
     ports:
       - 8081:8080
+  netbox-worker:
+    image: netboxcommunity/netbox:v4.4.6
+  netbox-housekeeping:
+    image: netboxcommunity/netbox:v4.4.6

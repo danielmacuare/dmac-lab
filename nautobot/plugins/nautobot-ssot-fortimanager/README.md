@@ -6,9 +6,12 @@ In this case we will use the [SSOT framework](https://github.com/nautobot/nautob
 
 ## TO-DO
 
+- When you modify a Service Object POrt, it doesn't update Nautobot with what is in the JSON. Instead, it creates a new entry.
+- Complete Service Objects Sync
+- Add a Tag first.
+- Test Filtering queryset by using the FortiManager IPAM NAMESPACE. base.py
 - Create a diffsync model to load data from a source (JSON) and update the Target (Nautobot)
   - Update nautobot.ipam.IPAddress with an IP
-- Fix use_cache
 - Remove unnecessarey create(), updated(), delete() methods.
 
 ## Pre-Requisites
@@ -86,7 +89,7 @@ invoke debug
 - Add the DiffSync model to the top_level attribute (D)
   - Source Adapter top_level update (D)
   - Target Adapter top_level update (D)
-- Add the Source Adapter code to translate daa into the Generic Diffsync model(D)
+- Add the Source Adapter code to translate data into the Generic Diffsync model(D)
 
 New Class(Done)
     FortiManagerIPAddressAdapter --> FortiManagerFWRulesAdapter (D)
@@ -95,7 +98,7 @@ New Class(Done)
 New Methods
     # Address
     - load_ip ---> load_ip_addresses (done)
-    - load_fqdns
+    - load_fqdns (Done)
     - load_ip_ranges
     - load_address_objects
     - load_address_objects_groups
