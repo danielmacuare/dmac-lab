@@ -1,0 +1,11 @@
+{
+    "address": IPNetwork('104.16.123.96/32'),
+    "description": "Cloudflare-IP",
+    "dns_name": "www.cloudflare.com",
+    "host": "104.16.123.96",
+    "ip_version": 4,
+    "mask_length": 32,
+    "status": "active",
+    "type": "host"
+}
+
