@@ -1,0 +1,5 @@
+{
+    "recommendations": [
+        "detachhead.basedpyright" // this will prompt developers working on your project to install the extension
+    ],
+}
