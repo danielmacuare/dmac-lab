@@ -28,13 +28,17 @@ for field in model._meta.concrete_fields:
     is_relation_str = "Yes" if field.is_relation else "No"
     related_model_name = field.related_model.__name__ if field.is_relation else ""
 
-    rich_table.add_row(field.name, type(field).__name__, is_relation_str, related_model_name)
+    rich_table.add_row(
+        field.name, type(field).__name__, is_relation_str, related_model_name
+    )
 
 console.print(rich_table)  # Print the table using the console
 
 # Create a new Table instance for local fields
 rich_table_local = Table(
-    title=f"Django Model Fields (Local) - MODEL: {model_name}", show_lines=True, header_style="bold magenta"
+    title=f"Django Model Fields (Local) - MODEL: {model_name}",
+    show_lines=True,
+    header_style="bold magenta",
 )
 rich_table_local.add_column("Field Name", style="cyan", no_wrap=True)
 rich_table_local.add_column("Field Type", style="green")
@@ -45,6 +49,8 @@ for field in model._meta.local_fields:
     is_relation_str = "Yes" if field.is_relation else "No"
     related_model_name = field.related_model.__name__ if field.is_relation else ""
 
-    rich_table_local.add_row(field.name, type(field).__name__, is_relation_str, related_model_name)
+    rich_table_local.add_row(
+        field.name, type(field).__name__, is_relation_str, related_model_name
+    )
 
 console.print(rich_table_local)  # Print the table using the console

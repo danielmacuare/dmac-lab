@@ -14,6 +14,8 @@ IPAddressDiffSyncModel.create(
 
 
 ## Debugging FortiManager Adapter
-from nautobot_ssot_fortimanager.diffsync.adapters.fmanager import FortiManagerFWRulesAdapter
+from nautobot_ssot_fortimanager.diffsync.adapters.fmanager import (
+    FortiManagerFWRulesAdapter,
+)
 
 FortiManagerFWRulesAdapter()
